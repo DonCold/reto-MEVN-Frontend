@@ -5,7 +5,7 @@
     <!-- Esta es la Barra del Titulo  -->
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Inserten Titulo</v-toolbar-title>
+      <v-toolbar-title>Nombre de la empresa</v-toolbar-title>
     </v-app-bar>
 
     <!-- Barra de Navegacion -->
