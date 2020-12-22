@@ -2,6 +2,8 @@
   <v-data-table
     :headers="headers"
     :items="usuarios"
+    :loading="cargando"
+    loading-text="Cargando Por Favor Espere"
     sort-by="rol"
     class="elevation-1"
   >
@@ -45,7 +47,7 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.name"
+                      v-model="editedItem.nombre"
                       label="Usuario"
                     ></v-text-field>
                   </v-col>
@@ -65,18 +67,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.correo"
+                      v-model="editedItem.email"
                       label="Correo"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.estado"
-                      label="Estado"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -86,6 +78,11 @@
                   >
                   </v-col>
                 </v-row>
+                <v-text-field
+                  v-model="editedItem.password"
+                  label="Contraseña"
+                  type="password"
+                ></v-text-field>
               </v-container>
             </v-card-text>
 
@@ -110,18 +107,18 @@
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="headline">Quieres eliminar este usuario?</v-card-title>
+            <v-card-title class="headline">Confirmar Cambio de Estado?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete">Cancelar</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+              <v-btn color="blue darken-1" text @click="deleteItemConfirm">Confirmar</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:item.actions="{ item }">
+    <template v-slot:[`item.actions`]="{ item }">
       <v-icon
         small
         class="mr-2"
@@ -148,36 +145,41 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: "Usuarios",
     data: () => ({
       dialog: false,
       dialogDelete: false,
+      cargando: true,
       headers: [
         {
           text: 'Usuario',
           align: 'start',
           sortable: true,
-          value: 'name',
+          value: 'nombre',
         },
         { text: 'Rol', value: 'rol' },
-        { text: 'Correo Electronico', value: 'correo' },
+        { text: 'Correo Electronico', value: 'email' },
         { text: 'Estado', value: 'estado' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       usuarios: [],
       editedIndex: -1,
       editedItem: {
-        name: '',
+        nombre: '',
         rol: '',
-        correo: '',
+        email: '',
         estado: 0,
+        password: "",
       },
       defaultItem: {
-        name: '',
+        nombre: '',
         rol: 'administrador',
-        correo: '',
+        email: '',
         estado: 0,
+        password: "",
       },
     }),
 
@@ -201,74 +203,27 @@ export default {
     },
 
     methods: {
+
+      list() {
+        this.cargando = true;
+        axios.get("http://localhost:3000/api/usuario/list")
+          .then(res => {
+             this.usuarios = res.data;
+             this.cargando = false;
+          })
+          .catch( e => {
+            return e
+          })
+      },
+
       initialize () {
-        this.usuarios = [
-          /*{
-            name: 'Frozen Yogurt',
-            rol: 159,
-            correo: 6.0,
-            estado: 24,
-          },
-          {
-            name: 'Ice cream sandwich',
-            rol: 237,
-            correo: 9.0,
-            estado: 37,
-          },
-          {
-            name: 'Eclair',
-            rol: 262,
-            correo: 16.0,
-            estado: 23,
-          },
-          {
-            name: 'Cupcake',
-            rol: 305,
-            correo: 3.7,
-            estado: 67,
-          },
-          {
-            name: 'Gingerbread',
-            rol: 356,
-            correo: 16.0,
-            estado: 49,
-          },
-          {
-            name: 'Jelly bean',
-            rol: 375,
-            correo: 0.0,
-            estado: 94,
-          },
-          {
-            name: 'Lollipop',
-            rol: 392,
-            correo: 0.2,
-            estado: 98,
-          },
-          {
-            name: 'Honeycomb',
-            rol: 408,
-            correo: 3.2,
-            estado: 87,
-          },
-          {
-            name: 'Donut',
-            rol: 452,
-            correo: 25.0,
-            estado: 51,
-          },
-          {
-            name: 'KitKat',
-            rol: 518,
-            correo: 26.0,
-            estado: 65,
-          },*/
-        ]
+        this.list()
       },
 
       editItem (item) {
         this.editedIndex = this.usuarios.indexOf(item)
         this.editedItem = Object.assign({}, item)
+        this.editedItem.password = ""
         this.dialog = true
       },
 
@@ -279,8 +234,17 @@ export default {
       },
 
       deleteItemConfirm () {
-        this.usuarios.splice(this.editedIndex, 1)
-        this.closeDelete()
+        if(this.editedItem.estado === 1){
+          axios.put("http://localhost:3000/api/usuario/deactivate", {id: this.editedItem.id})
+          .then(()=>{
+            this.closeDelete()
+          })
+        } else {
+          axios.put("http://localhost:3000/api/usuario/activate", {id: this.editedItem.id})
+          .then(()=>{
+            this.closeDelete()
+          })
+        }
       },
 
       close () {
@@ -289,6 +253,7 @@ export default {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
         })
+        this.list()
       },
 
       closeDelete () {
@@ -297,15 +262,36 @@ export default {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
         })
+        this.list()
       },
 
       save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.usuarios[this.editedIndex], this.editedItem)
+        if(this.editedIndex > -1){
+          let objetoEditar = {
+            id: this.editedItem.id,
+            nombre: this.editedItem.nombre,
+            rol: this.editedItem.rol,
+            password: this.editedItem.password,
+            estado: this.editedItem.estado,
+            email: this.editedItem.email
+          }
+          axios.put("http://localhost:3000/api/usuario/update", objetoEditar)
+          .then(() => {
+            this.close()
+          })
         } else {
-          this.usuarios.push(this.editedItem)
+          let objetoGuardar = {
+            nombre: this.editedItem.nombre,
+            rol: this.editedItem.rol,
+            password: this.editedItem.password,
+            estado: this.editedItem.estado,
+            email: this.editedItem.email
+          }
+          axios.post("http://localhost:3000/api/usuario/add", objetoGuardar)
+          .then(() => {
+            this.close()
+          })
         }
-        this.close()
       },
     },
 }
