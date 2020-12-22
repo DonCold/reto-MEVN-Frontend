@@ -121,7 +121,7 @@
         </v-dialog>
       </v-toolbar>
     </template>
-    <template>
+    <template v-slot:item.actions="{ item }">
       <v-icon
         small
         class="mr-2"
@@ -157,7 +157,7 @@ export default {
         {
           text: 'Usuario',
           align: 'start',
-          sortable: false,
+          sortable: true,
           value: 'name',
         },
         { text: 'Rol', value: 'rol' },
@@ -175,7 +175,7 @@ export default {
       },
       defaultItem: {
         name: '',
-        rol: '',
+        rol: 'administrador',
         correo: '',
         estado: 0,
       },
