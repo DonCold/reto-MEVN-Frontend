@@ -1,9 +1,12 @@
 <template>
   <v-container>
-    <div class="text-right">
+
+    <!-- Cerrar Sesion -->
+    <div class="text-right" v-if="user.nombre">
       <span class="badge bg-secondary">{{ user.nombre }}</span>
       <button type="button" class="btn btn-success" v-on:click="cerrarSesion">Cerrar Sesión</button>
     </div>
+
     <v-layout wrap>
       <v-flex  xs12>
         <br>
