@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="usuarios"
+    :items="categorias"
     :loading="cargando"
     loading-text="Cargando Por Favor Espere"
     sort-by="rol"
@@ -11,7 +11,7 @@
       <v-toolbar
         flat
       >
-        <v-toolbar-title>Lista de Usuarios</v-toolbar-title>
+        <v-toolbar-title>Lista de Categorias</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -30,7 +30,7 @@
               v-bind="attrs"
               v-on="on"
             >
-              Agregar Usuario
+              Agregar Categoria
             </v-btn>
           </template>
           <v-card>
@@ -48,41 +48,14 @@
                   >
                     <v-text-field
                       v-model="editedItem.nombre"
-                      label="Usuario"
+                      label="Categoria"
                     ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.rol"
-                      label="Rol"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.email"
-                      label="Correo"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
                   </v-col>
                 </v-row>
-                <v-text-field
-                  v-model="editedItem.password"
-                  label="Contraseña"
-                  type="password"
-                ></v-text-field>
+                <v-textarea
+                  v-model="editedItem.descripcion"
+                  label="Descripcion"
+                ></v-textarea>
               </v-container>
             </v-card-text>
 
@@ -155,31 +128,26 @@ export default {
       cargando: true,
       headers: [
         {
-          text: 'Usuario',
+          text: 'Categoria',
           align: 'start',
           sortable: true,
           value: 'nombre',
         },
-        { text: 'Rol', value: 'rol' },
-        { text: 'Correo Electronico', value: 'email' },
+        { text: 'Descripcion', value: 'descripcion' },
         { text: 'Estado', value: 'estado' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
-      usuarios: [],
+      categorias: [],
       editedIndex: -1,
       editedItem: {
         nombre: '',
-        rol: '',
-        email: '',
+        descripcion: '',
         estado: 0,
-        password: "",
       },
       defaultItem: {
         nombre: '',
-        rol: 'administrador',
-        email: '',
+        descripcion: '',
         estado: 0,
-        password: "",
       },
     }),
 
@@ -206,9 +174,9 @@ export default {
 
       list() {
         this.cargando = true;
-        axios.get("http://localhost:3000/api/usuario/list")
+        axios.get("http://localhost:3000/api/categoria/list")
           .then(res => {
-             this.usuarios = res.data;
+             this.categorias = res.data;
              this.cargando = false;
           })
           .catch( e => {
@@ -221,26 +189,26 @@ export default {
       },
 
       editItem (item) {
-        this.editedIndex = this.usuarios.indexOf(item)
+        this.editedIndex = this.categorias.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.editedItem.password = ""
         this.dialog = true
       },
 
       deleteItem (item) {
-        this.editedIndex = this.usuarios.indexOf(item)
+        this.editedIndex = this.categorias.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
 
       deleteItemConfirm () {
         if(this.editedItem.estado === 1){
-          axios.put("http://localhost:3000/api/usuario/deactivate", {id: this.editedItem.id})
+          axios.put("http://localhost:3000/api/categoria/deactivate", {id: this.editedItem.id})
           .then(()=>{
             this.closeDelete()
           })
         } else {
-          axios.put("http://localhost:3000/api/usuario/activate", {id: this.editedItem.id})
+          axios.put("http://localhost:3000/api/categoria/activate", {id: this.editedItem.id})
           .then(()=>{
             this.closeDelete()
           })
@@ -270,24 +238,20 @@ export default {
           let objetoEditar = {
             id: this.editedItem.id,
             nombre: this.editedItem.nombre,
-            rol: this.editedItem.rol,
-            password: this.editedItem.password,
+            descripcion: this.editedItem.descripcion,
             estado: this.editedItem.estado,
-            email: this.editedItem.email
           }
-          axios.put("http://localhost:3000/api/usuario/update", objetoEditar)
+          axios.put("http://localhost:3000/api/categoria/update", objetoEditar)
           .then(() => {
             this.close()
           })
         } else {
           let objetoGuardar = {
             nombre: this.editedItem.nombre,
-            rol: this.editedItem.rol,
-            password: this.editedItem.password,
+            descripcion: this.editedItem.descripcion,
             estado: this.editedItem.estado,
-            email: this.editedItem.email
           }
-          axios.post("http://localhost:3000/api/usuario/add", objetoGuardar)
+          axios.post("http://localhost:3000/api/categoria/add", objetoGuardar)
           .then(() => {
             this.close()
           })
