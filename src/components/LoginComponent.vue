@@ -63,6 +63,8 @@
                   localStorage.setItem("user", JSON.stringify(res.data.user));
 
                   console.log(token);
+                  this.email = "";
+                  this.password = "";
                   Swal.fire({
                     title: 'Bienvenido',
                     text: "Logueado Correctamente",

@@ -153,6 +153,7 @@ export default {
       dialog: false,
       dialogDelete: false,
       cargando: true,
+      pass: "",
       headers: [
         {
           text: 'Usuario',
@@ -185,7 +186,7 @@ export default {
 
     computed: {
       formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+        return this.editedIndex === -1 ? 'Nuevo Usuario' : 'Editar Usuario'
       },
     },
 
@@ -223,6 +224,7 @@ export default {
       editItem (item) {
         this.editedIndex = this.usuarios.indexOf(item)
         this.editedItem = Object.assign({}, item)
+        this.pass = this.editedItem.password
         this.editedItem.password = ""
         this.dialog = true
       },
@@ -267,6 +269,9 @@ export default {
 
       save () {
         if(this.editedIndex > -1){
+          if(this.editedItem.password===""){
+            this.editedItem.password = this.pass
+          }
           let objetoEditar = {
             id: this.editedItem.id,
             nombre: this.editedItem.nombre,
