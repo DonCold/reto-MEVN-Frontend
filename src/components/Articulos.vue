@@ -30,7 +30,7 @@
               v-bind="attrs"
               v-on="on"
             >
-              Agregar Usuario
+              Agregar Servicio
             </v-btn>
           </template>
           <v-card>
@@ -48,7 +48,7 @@
                   >
                     <v-text-field
                       v-model="editedItem.nombre"
-                      label="Usuario"
+                      label="Nombre"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -57,8 +57,9 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.rol"
-                      label="Rol"
+                      v-model="editedItem.codigo"
+                      label="Codigo"
+                      type="number"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -67,8 +68,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.email"
-                      label="Correo"
+                      v-model="editedItem.categoriaId"
+                      label="Id Categoria"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -78,11 +79,10 @@
                   >
                   </v-col>
                 </v-row>
-                <v-text-field
-                  v-model="editedItem.password"
-                  label="Contraseña"
-                  type="password"
-                ></v-text-field>
+                <v-textarea
+                  v-model="editedItem.descripcion"
+                  label="Descripcion"
+                ></v-textarea>
               </v-container>
             </v-card-text>
 
@@ -130,7 +130,7 @@
         small
         @click="deleteItem(item)"
       >
-        mdi-delete
+        mdi-eye-check-outline
       </v-icon>
     </template>
     <template v-slot:no-data>
@@ -155,13 +155,14 @@ export default {
       cargando: true,
       headers: [
         {
-          text: 'Usuario',
+          text: 'Servicio',
           align: 'start',
           sortable: true,
           value: 'nombre',
         },
-        { text: 'Rol', value: 'rol' },
-        { text: 'Correo Electronico', value: 'email' },
+        { text: 'Codigo', value: 'codigo' },
+        { text: 'Descripcion', value: 'descripcion' },
+        { text: 'Categoria', value: 'categoriaId'},
         { text: 'Estado', value: 'estado' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
@@ -169,17 +170,17 @@ export default {
       editedIndex: -1,
       editedItem: {
         nombre: '',
-        rol: '',
-        email: '',
+        codigo: '',
+        descripcion: '',
         estado: 0,
-        password: "",
+        categoriaId: "",
       },
       defaultItem: {
         nombre: '',
-        rol: 'administrador',
-        email: '',
+        codigo: '',
+        descripcion: '',
         estado: 0,
-        password: "",
+        categoriaId: "",
       },
     }),
 
@@ -206,7 +207,7 @@ export default {
 
       list() {
         this.cargando = true;
-        axios.get("http://localhost:3000/api/usuario/list")
+        axios.get("http://localhost:3000/api/articulo/list")
           .then(res => {
              this.usuarios = res.data;
              this.cargando = false;
@@ -235,12 +236,12 @@ export default {
 
       deleteItemConfirm () {
         if(this.editedItem.estado === 1){
-          axios.put("http://localhost:3000/api/usuario/deactivate", {id: this.editedItem.id})
+          axios.put("http://localhost:3000/api/articulo/deactivate", {id: this.editedItem.id})
           .then(()=>{
             this.closeDelete()
           })
         } else {
-          axios.put("http://localhost:3000/api/usuario/activate", {id: this.editedItem.id})
+          axios.put("http://localhost:3000/api/articulo/activate", {id: this.editedItem.id})
           .then(()=>{
             this.closeDelete()
           })
@@ -270,24 +271,22 @@ export default {
           let objetoEditar = {
             id: this.editedItem.id,
             nombre: this.editedItem.nombre,
-            rol: this.editedItem.rol,
-            password: this.editedItem.password,
-            estado: this.editedItem.estado,
-            email: this.editedItem.email
+            codigo: this.editedItem.codigo,
+            descripcion: this.editedItem.descripcion,
           }
-          axios.put("http://localhost:3000/api/usuario/update", objetoEditar)
+          axios.put("http://localhost:3000/api/articulo/update", objetoEditar)
           .then(() => {
             this.close()
           })
         } else {
           let objetoGuardar = {
             nombre: this.editedItem.nombre,
-            rol: this.editedItem.rol,
-            password: this.editedItem.password,
+            categoriaId: this.editedItem.categoriaId,
+            descripcion: this.editedItem.descripcion,
+            codigo: this.editedItem.codigo,
             estado: this.editedItem.estado,
-            email: this.editedItem.email
           }
-          axios.post("http://localhost:3000/api/usuario/add", objetoGuardar)
+          axios.post("http://localhost:3000/api/articulo/add", objetoGuardar)
           .then(() => {
             this.close()
           })

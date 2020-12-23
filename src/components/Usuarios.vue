@@ -130,7 +130,7 @@
         small
         @click="deleteItem(item)"
       >
-        mdi-delete
+        mdi-eye-check-outline
       </v-icon>
     </template>
     <template v-slot:no-data>
