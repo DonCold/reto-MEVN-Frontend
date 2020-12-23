@@ -23,7 +23,7 @@
             ></v-text-field>
           </v-container>
 
-          <button class="btn btn-primary" v-on:click.prevent="Saludos" >Ingresar</button>
+          <button class="btn btn-primary" v-on:click.prevent="iniciarSesion" >Ingresar</button>
         </v-form>
       </div>
     </div>
@@ -32,6 +32,7 @@
 
 <script>
   import Swal from 'sweetalert2'
+  import axios from 'axios';
 
   export default {
       name: "LoginComponet",
@@ -48,14 +49,45 @@
         ],
       }),
       methods: {
-        Saludos(){
-          Swal.fire({
-            title: 'Aun No tenemos nada we',
-            text: this.email + " " + this.password,
-            icon: 'error',
-            confirmButtonText: 'Cool'
-          })
-        }
+        async iniciarSesion() {
+          try {
+            let login = {
+              "email": this.email,
+              "password": this.password
+            }
+            axios.post("http://localhost:3000/api/usuario/login", login)
+              .then((res) =>{
+                let token = res.data.tokenReturn;
+                if(token){
+                  localStorage.setItem("token", token);
+                  localStorage.setItem("user", JSON.stringify(res.data.user));
+
+                  console.log(token);
+                  Swal.fire({
+                    title: 'Bienvenido',
+                    text: "Logueado Correctamente",
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                  });
+                }
+              })
+              .catch((e) =>{
+                Swal.fire({
+                  title: 'No encontrado',
+                  text: "Usuario No Encontrado",
+                  icon: 'error',
+                  confirmButtonText: 'Ok'
+                });
+              })
+          } catch(e) {
+            Swal.fire({
+              title: 'Error',
+              text: "A Ocurrido un Error",
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          }
+        },
       }
   }
 </script>
