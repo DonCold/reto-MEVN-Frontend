@@ -42,7 +42,7 @@
             >
               <template v-slot:activator>
                 <v-list-item-content>
-                  <v-list-item-title>Servicios</v-list-item-title>
+                  <v-list-item-title>Secciónes</v-list-item-title>
                 </v-list-item-content>
               </template>
               <v-list-item
@@ -99,7 +99,7 @@ export default {
   data: () => ({
     drawer: null,
     servicios: [
-      ['Articulos', 'mdi-store', "articulos"],
+      ['Servicios', 'mdi-store', "servicios"],
       ['Categorias', 'mdi-order-bool-ascending-variant', "categorias"],
     ],
     administracion: [

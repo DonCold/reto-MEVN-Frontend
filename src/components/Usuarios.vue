@@ -176,7 +176,7 @@ export default {
       },
       defaultItem: {
         nombre: '',
-        rol: 'administrador',
+        rol: 'Administrador',
         email: '',
         estado: 0,
         password: "",
