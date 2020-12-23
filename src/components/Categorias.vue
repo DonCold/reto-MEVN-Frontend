@@ -103,7 +103,7 @@
         small
         @click="deleteItem(item)"
       >
-        mdi-delete
+        mdi-eye-check-outline
       </v-icon>
     </template>
     <template v-slot:no-data>
@@ -127,9 +127,9 @@ export default {
       dialogDelete: false,
       cargando: true,
       headers: [
+        { text: 'Id', align: 'start',value: 'id' },
         {
           text: 'Categoria',
-          align: 'start',
           sortable: true,
           value: 'nombre',
         },
@@ -140,11 +140,13 @@ export default {
       categorias: [],
       editedIndex: -1,
       editedItem: {
+        id: '',
         nombre: '',
         descripcion: '',
         estado: 0,
       },
       defaultItem: {
+        id: '',
         nombre: '',
         descripcion: '',
         estado: 0,
