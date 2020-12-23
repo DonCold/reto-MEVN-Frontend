@@ -26,21 +26,21 @@
           Quienes somos
         </h1>
         <p class="text-md-center">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui laboriosam quos commodi voluptate facilis blanditiis nam, accusantium veniam eaque architecto? Ratione excepturi magni perspiciatis eveniet sit aliquam nobis beatae repellat.
+          Soluciones integrales de software y administración (SISA) es una empresa dedicada al mantenimiento preventivo y correctivo de software, el cual busca dar soporte a todo el ciclo de vida, y así reducir las perdidas por fallas en dichos sistemas.
         </p>
       </v-flex>
     </v-layout>
     <v-layout mt-10 align-center justify-space-around row fill-height>
       <v-flex xs3>
           <v-card class="mx-auto" max-width="344">
-            <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="200px"> </v-img>
+            <v-img src="/images/Servicios1.jpg" height="200px"> </v-img>
 
             <v-card-title>
-              Servicio 1
+              TEST Comportamiento
             </v-card-title>
 
             <v-card-subtitle>
-              Categoría 2
+              Monitoreo 
             </v-card-subtitle>
 
             <v-card-actions>
@@ -55,7 +55,7 @@
               <v-divider></v-divider>
 
               <v-card-text>
-                I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
+                Servicio de testeo en su software publico, para persibir comportamientos no deseados en el sistema.
               </v-card-text>
               </div>
             </v-expand-transition>
@@ -64,14 +64,14 @@
       </v-flex>
       <v-flex xs3>
           <v-card class="mx-auto" max-width="344">
-            <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="200px"> </v-img>
+            <v-img src="/images/Servicio2.png" height="200px"> </v-img>
 
             <v-card-title>
-              Servicio 2
+              Análisis
             </v-card-title>
 
             <v-card-subtitle>
-              Categoria 2
+              Valoración
             </v-card-subtitle>
 
             <v-card-actions>
@@ -86,7 +86,7 @@
               <v-divider></v-divider>
 
               <v-card-text>
-                I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
+                Servicio en el cual se ofrece un análisis general del sistema, buscando anomalias o fallas y realizando su correción.
               </v-card-text>
               </div>
             </v-expand-transition>
@@ -94,14 +94,14 @@
       </v-flex>
       <v-flex xs3>
           <v-card class="mx-auto" max-width="344">
-            <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="200px"> </v-img>
+            <v-img src="/images/Servicio3.jpg" height="200px"> </v-img>
 
             <v-card-title>
-              Servicio 3
+              Prevensión
             </v-card-title>
 
             <v-card-subtitle>
-              Categoria 3
+              Monitoreo
             </v-card-subtitle>
 
             <v-card-actions>
@@ -116,7 +116,7 @@
               <v-divider></v-divider>
 
               <v-card-text>
-                I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
+                Se realiza un monitoreo general y correción de las novedades presentadas en el sistema buscando dar solución a posibles fallas en el sistema
               </v-card-text>
               </div>
             </v-expand-transition>
@@ -158,16 +158,16 @@ import Swal from 'sweetalert2';
        user: [],
         items: [
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+            src: '/images/Banner1.png',
           },
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+            src: '/images/Banner2.jpg',
           },
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
+            src: '/images/Banner3.png',
           },
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
+            src: '/images/Banner4.jpg',
           },
         ],
       }
