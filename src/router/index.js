@@ -18,17 +18,26 @@ const routes = [
   {
     path: "/usuarios",
     name: "Usuarios",
-    component: () => import("../views/Usuarios.vue")
+    component: () => import("../views/Usuarios.vue"),
+    meta: {
+      requireAuth: true
+    }
   },
   {
     path: "/categorias",
     name: "Categorias",
-    component: () => import("../views/Categorias.vue")
+    component: () => import("../views/Categorias.vue"),
+    meta: {
+      requireAuth: true
+    }
   },
   {
     path: "/servicios",
     name: "Articulos",
-    component: () => import("../views/Articulos.vue")
+    component: () => import("../views/Articulos.vue"),
+    meta: {
+      requireAuth: true
+    }
   }
 ]
 
@@ -37,5 +46,19 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+router.beforeEach((to, from, next) =>{
+  if(to.matched.some(destinoRequireAut => destinoRequireAut.meta.requireAuth)){
+    if(localStorage.getItem("token")){
+      next();
+    } else {
+      next({
+        path: "/login"
+      })
+    }
+  } else {
+    next();
+  }
+});
 
 export default router

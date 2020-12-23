@@ -1,5 +1,9 @@
 <template>
   <v-container>
+    <div class="text-right">
+      <span class="badge bg-secondary">{{ user.nombre }}</span>
+      <button type="button" class="btn btn-success" v-on:click="cerrarSesion">Cerrar Sesión</button>
+    </div>
     <v-layout wrap>
       <v-flex  xs12>
         <br>
@@ -115,22 +119,40 @@
             </v-expand-transition>
           </v-card>
       </v-flex>
-      
     </v-layout>
   </v-container>
 </template>
 <script>
-  export default {
-    data: () => ({
-      show: false,
-    }),
-  }
-</script>
-<script>
+
+import Swal from 'sweetalert2';
+
   export default {
       name: "Inicio",
+      methods: {
+        cerrarSesion(){
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          this.user = [];
+          Swal.fire({
+            title: 'Sesion Cerrada',
+            text: "Vuelva Pronto",
+            icon: 'success',
+            confirmButtonText: 'Ok'
+          });
+        },
+        imprimirNombre(){
+          let user = localStorage.getItem("user");
+          if(user){
+            user = JSON.parse(user)
+            this.user = user;
+            console.log(this.user);
+          }
+        }
+      },
    data () {
      return {
+       show: false,
+       user: [],
         items: [
           {
             src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
@@ -145,8 +167,11 @@
             src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
           },
         ],
-      }      
-    }    
+      }
+    },
+    created() {
+      this.imprimirNombre();
+    }
   }
 </script>
 
